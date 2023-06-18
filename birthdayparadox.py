@@ -13,22 +13,85 @@ def main():
           "types of experiments, in which we conduct multiple random trials\n"
           "to understand the likely outcomes, Monte Carlo experiments.\n"
           "\n"
-          "You can find out more about the Birthday Paradox at 'https://en.\n"
-          "wikipedia.or/wiki/Birthday_problem'.")
+          "You can find out more about the Birthday Paradox at\n"
+          "https://en.wikipedia.or/wiki/Birthday_problem.")
 
-    print("How many people shall we generate with random birthdays?")
-    bd_num = 0
-    while bd_num < 2:
-        bd_num = input('> ')
-        bd_num = int(bd_num)
-        if bd_num < 2:
-            print("Value must be 2 or greater...")
+    while True:
+        print("How many people shall we generate with random birthdays?")
+        bd_num = 0
+        while bd_num < 2:
+            bd_num = input('> ')
+            bd_num = int(bd_num)
+            if bd_num < 2:
+                print("Value must be 2 or greater...")
 
-    months = ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
-    days = ()
-    bdays = ()
+        print("How many simulations shall we run?")
+        sims = 0
+        while sims < 1:
+            sims = input("> ")
+            sims = int(sims)
+            if sims < 1:
+                print("Value must be greater than 0...")
 
-    for i in range(bd_num):
-        random.shuffle(months)
+        a = 1
+        while a <= sims:
+            same = 0
+            months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            bdays = []
+
+            # Creating random birthdays
+            for i in range(bd_num):
+                bday = ''
+                # Shuffling the list of months and adding the first one in the list
+                random.shuffle(months)
+                bday += months[0]
+
+                # If month is feb, days will be limited to 28 else, we will use a full range to 31 for now
+                # TODO: separate months that have 30 days and months with 31 days
+                # TODO: add years to calculate if february is a leap year
+                if bday == 'Feb':
+                    days = list(range(1, 29))
+                else:
+                    days = list(range(1, 32))
+
+                random.shuffle(days)
+                bday += ' '
+                bday += str(days[0])
+
+                bdays.append(bday)
+
+            # print("==== Simulation {} bdays ====".format(a))
+            # print(bdays)
+
+            for k in bdays:
+                # print("\t-- Bday: {} --".format(k))
+                for l in bdays[bdays.index(k)+1:]:
+                    # print("check: {}".format(l))
+                    if k == l:
+                        # print("\t** MATCH **")
+                        same += 1
+                        a += 1
+                        bdays.pop(bdays.index(k))
+                        break
+            # print("Same bdays: {}".format(same))
+            a += 1
+
+        percent = same/sims
+
+        print("{} % chance of people having the same birthday in a group of {} people".format(percent, bd_num))
+
+        print("Would you like to run another test(y/n)?")
+        user = input('> ')
+        if user == 'y' or user == 'Y':
+            continue
+        elif user == 'n' or user == 'N':
+            break
+        else:
+            print("Invalid input. Exiting program....")
+            break
 
     return 0
+
+
+if __name__ == '__main__':
+    main()
