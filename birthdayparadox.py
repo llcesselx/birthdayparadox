@@ -1,4 +1,5 @@
-import datetime, random
+import datetime
+import random
 
 
 def main():
@@ -25,17 +26,9 @@ def main():
             if bd_num < 2:
                 print("Value must be 2 or greater...")
 
-        print("How many simulations shall we run?")
-        sims = 0
-        while sims < 1:
-            sims = input("> ")
-            sims = int(sims)
-            if sims < 1:
-                print("Value must be greater than 0...")
-
         a = 1
-        while a <= sims:
-            same = 0
+        same = 0
+        while a <= 100000:
             months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
             bdays = []
 
@@ -76,9 +69,11 @@ def main():
             # print("Same bdays: {}".format(same))
             a += 1
 
-        percent = same/sims
+        percent = same/100000
+        percent *= 100
 
-        print("{} % chance of people having the same birthday in a group of {} people".format(percent, bd_num))
+        print("{} % chance of two people having the same birthday in a group of {} people\n"
+              "after running 100000 simulations".format(percent, bd_num))
 
         print("Would you like to run another test(y/n)?")
         user = input('> ')
